@@ -1,0 +1,6 @@
+path: C:\Users\Asus\Downloads\diseaseee\insect data set
+train: images/train
+val: images/val
+
+nc: 1
+names: ['disease']
