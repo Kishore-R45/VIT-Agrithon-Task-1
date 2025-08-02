@@ -1,20 +1,20 @@
 import pandas as pd
+import os
 
-# Load YOLO and TabNet predictions from Excel instead of CSV
-yolo_df = pd.read_excel("disease_presence_labels.csv.xlsx")         # contains filename, label
-tabnet_df = pd.read_excel("crop_disease_characteristics.csv.xlsx")  # contains filename, q1, q2..., label
+file_path1 = os.path.join(os.path.dirname(__file__), "disease_presence_labels.xlsx")
+yolo_df = pd.read_excel(file_path1)
 
-# Rename for clarity
+# Read the second Excel file
+file_path2 = os.path.join(os.path.dirname(__file__), "crop_disease_characteristics.xlsx")
+tabnet_df = pd.read_excel(file_path2)
+
 yolo_df = yolo_df.rename(columns={"label": "yolo_pred"})
 tabnet_df = tabnet_df.rename(columns={"label": "tabnet_pred"})
 
-# Keep only relevant columns
 tabnet_df = tabnet_df[["filename", "tabnet_pred"]]
 
-# Merge both predictions
 merged = pd.merge(yolo_df, tabnet_df, on="filename", how="inner")
 
-# Print final decision for each image
 for _, row in merged.iterrows():
     filename = row["filename"]
     yolo = row["yolo_pred"]
